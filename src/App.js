@@ -1,23 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
 
 function App() {
+  const toDos = [
+    { type: "task", title: "do homework", completed: false },
+    { type: "task", title: "make dinner", completed: false },
+    {
+      type: "list",
+      tasks: [
+        { type: "task", title: "chop potatoes", completed: false },
+        { type: "task", title: "wash tomatoes", completed: false },
+        { type: "task", title: "bake veggies", completed: false },
+        {
+          type: "list",
+          tasks: [
+            { type: "task", title: "30 min potatoes", completed: false },
+            { type: "task", title: "heat leftovers", completed: false },
+          ],
+        },
+      ],
+    },
+    { type: "task", title: "wash dishes", completed: false },
+  ];
+
+  function renderToDos(toDos) {
+    const toDoTree = toDos.map((task) => {
+      if (task.type === "task") {
+        return (
+          <div className="list-toDo">
+            <span className="title">{task.title}</span>
+          </div>
+        );
+      } else {
+        return <div className="list">{renderToDos(task.tasks)}</div>;
+      }
+    });
+    return <div className="list">{toDoTree}</div>;
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>All my to-dos</h1>
+      {renderToDos(toDos)}
     </div>
   );
 }
